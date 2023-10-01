@@ -14,6 +14,6 @@ namespace ForAirAstana.Infrastructure
 
     public interface IResponse<T> : IResponse
     {
-        T Data { get; set; }
+        T? Data { get; set; }
     }
 }
