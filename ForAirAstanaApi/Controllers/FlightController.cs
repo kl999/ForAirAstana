@@ -1,6 +1,6 @@
 ﻿using ForAirAstana.Domain;
 using ForAirAstana.Infrastructure;
-using ForAirAstanaApi.Models;
+using ForAirAstana.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForAirAstanaApi.Controllers
@@ -29,9 +29,15 @@ namespace ForAirAstanaApi.Controllers
         }
 
         [HttpPost(Name = "Add")]
-        public IResponse Add(FlightRequest request)
+        public IResponse Add(AddFlightRequest request)
         {
             return _controller.Invoke(ctrl => ctrl.AddFlight(request));
+        }
+
+        [HttpPost(Name = "Update")]
+        public IResponse Update(UpdateFlightRequest request)
+        {
+            return _controller.Invoke(ctrl => ctrl.UpdateFlight(request));
         }
     }
 }

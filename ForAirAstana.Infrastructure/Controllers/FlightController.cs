@@ -1,14 +1,15 @@
-﻿using ForAirAstana.Domain;
-using ForAirAstanaApi.Models;
+﻿using FluentValidation;
+using ForAirAstana.Domain;
+using ForAirAstana.Infrastructure.Models;
 using System.Diagnostics;
 
 namespace ForAirAstana.Infrastructure.Controllers
 {
     public class FlightController : IController
     {
-        public IResponse AddFlight(FlightRequest request)
+        public IResponse AddFlight(AddFlightRequest request)
         {
-            var validator = new FlightRequestValidator();
+            var validator = new AddFlightRequestValidator();
 
             var validResult = validator.Validate(request);
 
@@ -55,6 +56,30 @@ namespace ForAirAstana.Infrastructure.Controllers
                         Arrival = DateTime.Now.AddDays(2),
                     },
                 }
+            };
+        }
+
+        public IResponse UpdateFlight(UpdateFlightRequest request)
+        {
+            var validator = new UpdateFlightRequestValidator();
+
+            var validResult = validator.Validate(request);
+
+            if (!validResult.IsValid)
+            {
+                return new EmptyResponse()
+                {
+                    Code = ResponseCodes.ValidationError,
+                    Message = $"{nameof(ResponseCodes.ValidationError)}: {validResult}",
+                };
+            }
+
+            Trace.WriteLine($"+++> FlightController.UpdateFlight: {request}");
+
+            return new EmptyResponse()
+            {
+                Code = ResponseCodes.Success,
+                Message = $"{nameof(ResponseCodes.Success)}",
             };
         }
     }
