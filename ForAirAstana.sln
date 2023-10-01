@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForAirAstanaApi", "ForAirAstanaApi\ForAirAstanaApi.csproj", "{DD65A629-DAC4-44E6-B7BB-199F5D3AE1F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForAirAstana.Domain", "ForAirAstana.Domain\ForAirAstana.Domain.csproj", "{6AB76E8F-785F-47DA-A2A0-24B170A2AC63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD65A629-DAC4-44E6-B7BB-199F5D3AE1F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD65A629-DAC4-44E6-B7BB-199F5D3AE1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD65A629-DAC4-44E6-B7BB-199F5D3AE1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD65A629-DAC4-44E6-B7BB-199F5D3AE1F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB76E8F-785F-47DA-A2A0-24B170A2AC63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AB76E8F-785F-47DA-A2A0-24B170A2AC63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AB76E8F-785F-47DA-A2A0-24B170A2AC63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AB76E8F-785F-47DA-A2A0-24B170A2AC63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B895751-13FB-4CB6-B632-919C8C6723B1}
+	EndGlobalSection
+EndGlobal
