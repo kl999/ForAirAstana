@@ -5,5 +5,6 @@
         Unknown = 0,
         Success = 1,
         UnknownError = -1,
+        ValidationError = -2,
     }
 }

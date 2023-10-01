@@ -1,4 +1,5 @@
 using ForAirAstana.Infrastructure;
+using ForAirAstana.Infrastructure.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
