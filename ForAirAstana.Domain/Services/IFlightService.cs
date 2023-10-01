@@ -10,6 +10,7 @@ namespace ForAirAstana.Domain.Services
     {
         void AddFlight(Flight flight);
         Flight GetFlight(int id);
+        IEnumerable<Flight> GetFlights();
         void UpdateFlight(Flight flight);
     }
 }

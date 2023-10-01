@@ -37,7 +37,7 @@ namespace ForAirAstana.Domain
 
             _flightService.AddFlight(flight);
 
-            _logger.LogInformation($"Flight #{flight.Id} added");
+            _logger.LogInformation($"Flight #{flight.Id} added. User {user.Id}");
         }
 
         public void UpdateFlight(Flight flight, User user)
@@ -49,7 +49,32 @@ namespace ForAirAstana.Domain
 
             _flightService.UpdateFlight(flight);
 
-            _logger.LogInformation($"Flight #{flight.Id} updated");
+            _logger.LogInformation($"Flight #{flight.Id} updated. User {user.Id}");
+        }
+
+        public IEnumerable<Flight> GetFlightList(User user, FlightListOrder flightListOrder = FlightListOrder.Arival)
+        {
+            if (user is null)
+                throw new ArgumentNullException(nameof(user));
+
+            var flights = _flightService.GetFlights();
+
+            switch (flightListOrder)
+            {
+                case FlightListOrder.Arival:
+                    flights = flights.OrderBy(f => f.Arrival);
+                    break;
+                case FlightListOrder.Destination:
+                    flights = flights.OrderBy(f => f.Destination);
+                    break;
+                case FlightListOrder.Origin:
+                    flights = flights.OrderBy(f => f.Origin);
+                    break;
+                default:
+                    throw new InvalidOperationException("Invalid flight list order");
+            }
+
+            return flights;
         }
     }
 }

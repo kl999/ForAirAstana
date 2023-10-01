@@ -25,7 +25,7 @@ namespace ForAirAstana.Domain
 
             _userService.AuthenticateUser(user);
 
-            _logger.LogInformation($"User #{user.Id} authenticated");
+            _logger.LogDebug($"User #{user.Id} authenticated");
 
             return user;
         }
