@@ -8,6 +8,9 @@ namespace ForAirAstana.Database
         DbSet<Entities.Role> Roles { get; set; }
         DbSet<Entities.User> Users { get; set; }
 
+        public AirAstanaDbContext(DbContextOptions<AirAstanaDbContext> options)
+            : base(options) { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             

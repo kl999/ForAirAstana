@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForAirAstana.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForAirAstana.Database", "ForAirAstana.Database\ForAirAstana.Database.csproj", "{E07CAE02-2389-4F55-B7BA-817EAD24D6BF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{603CFD73-91DA-4FAD-80F3-EDEB31F17EB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbTest", "Tests\DbTest\DbTest.csproj", "{9FE3DB7E-E86A-4C76-83DC-1A8E0C46F93D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{E07CAE02-2389-4F55-B7BA-817EAD24D6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E07CAE02-2389-4F55-B7BA-817EAD24D6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E07CAE02-2389-4F55-B7BA-817EAD24D6BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FE3DB7E-E86A-4C76-83DC-1A8E0C46F93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FE3DB7E-E86A-4C76-83DC-1A8E0C46F93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FE3DB7E-E86A-4C76-83DC-1A8E0C46F93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FE3DB7E-E86A-4C76-83DC-1A8E0C46F93D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9FE3DB7E-E86A-4C76-83DC-1A8E0C46F93D} = {603CFD73-91DA-4FAD-80F3-EDEB31F17EB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2B895751-13FB-4CB6-B632-919C8C6723B1}
