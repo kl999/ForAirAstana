@@ -12,22 +12,22 @@ namespace ForAirAstana.Infrastructure.Services
     {
         public void AddFlight(Flight flight)
         {
-            throw new NotImplementedException();
+            flight.Id = 1;
         }
 
         public Flight GetFlight(int id)
         {
-            throw new NotImplementedException();
+            return new Flight() { Arrival = DateTime.Now };
         }
 
         public IEnumerable<Flight> GetFlights()
         {
-            throw new NotImplementedException();
+            return new[] { new Flight() { Arrival = DateTime.Now } };
         }
 
         public void UpdateFlight(Flight flight)
         {
-            throw new NotImplementedException();
+
         }
     }
 }

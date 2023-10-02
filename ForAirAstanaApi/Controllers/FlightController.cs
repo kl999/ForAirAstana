@@ -2,17 +2,16 @@
 using ForAirAstana.Infrastructure;
 using ForAirAstana.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace ForAirAstanaApi.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class FlightController
+    public class FlightController : ControllerBase
     {
         private readonly ILogger<FlightController> _logger;
         private readonly C3Controller<ForAirAstana.Infrastructure.Controllers.FlightController> _controller;
-
-        private User? _user;
 
         public FlightController(
             ILogger<FlightController> logger,
@@ -25,19 +24,31 @@ namespace ForAirAstanaApi.Controllers
         [HttpGet(Name = "GetList")]
         public IResponse GetList()
         {
-            return _controller.Invoke(ctrl => ctrl.GetFlights());
+            string? userJson = HttpContext.Session.GetString("User");
+
+            var user = userJson is null ? null : JsonSerializer.Deserialize<User>(userJson);
+
+            return _controller.Invoke(ctrl => ctrl.GetFlights(user));
         }
 
         [HttpPost(Name = "Add")]
         public IResponse Add(AddFlightRequest request)
         {
-            return _controller.Invoke(ctrl => ctrl.AddFlight(request, _user));
+            string? userJson = HttpContext.Session.GetString("User");
+
+            var user = userJson is null ? null : JsonSerializer.Deserialize<User>(userJson);
+
+            return _controller.Invoke(ctrl => ctrl.AddFlight(request, user));
         }
 
         [HttpPost(Name = "Update")]
         public IResponse Update(UpdateFlightRequest request)
         {
-            return _controller.Invoke(ctrl => ctrl.UpdateFlight(request));
+            string? userJson = HttpContext.Session.GetString("User");
+
+            var user = userJson is null ? null : JsonSerializer.Deserialize<User>(userJson);
+
+            return _controller.Invoke(ctrl => ctrl.UpdateFlight(request, user));
         }
     }
 }
