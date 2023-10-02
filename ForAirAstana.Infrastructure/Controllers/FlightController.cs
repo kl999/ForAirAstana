@@ -7,74 +7,100 @@ namespace ForAirAstana.Infrastructure.Controllers
 {
     public class FlightController : IController
     {
-        public IResponse AddFlight(AddFlightRequest request)
+        private readonly FlightList _flightList;
+
+        public FlightController(FlightList flightList)
         {
+            _flightList = flightList;
+        }
+
+        public IResponse AddFlight(AddFlightRequest request, User? user)
+        {
+            if (user is null)
+                return new EmptyResponse()
+                {
+                    Code = ResponseCodes.AccessError,
+                    Message = $"{nameof(ResponseCodes.AccessError)}",
+                };
+
             var validator = new AddFlightRequestValidator();
 
             var validResult = validator.Validate(request);
 
             if (!validResult.IsValid)
-            {
                 return new EmptyResponse()
                 {
                     Code = ResponseCodes.ValidationError,
                     Message = $"{nameof(ResponseCodes.ValidationError)}: {validResult}",
                 };
-            }
 
-            Trace.WriteLine($"+++> FlightController.AddFlight: {request}");
+            var flight = new Flight
+            {
+                Origin = request.Origin,
+                Destination = request.Destination,
+                Departure = request.Departure,
+                Arrival = request.Arrival,
+                Status = (Status)request.Status,
+            };
+
+            _flightList.AddFlight(flight, user);
 
             return new Response<int>()
             {
                 Code = ResponseCodes.Success,
                 Message = $"{nameof(ResponseCodes.Success)}",
-                Data = Random.Shared.Next(1_000_000),
+                Data = flight.Id,
             };
         }
 
-        public IResponse GetFlights()
+        public IResponse GetFlights(User? user)
         {
+            if (user is null)
+                return new EmptyResponse()
+                {
+                    Code = ResponseCodes.AccessError,
+                    Message = $"{nameof(ResponseCodes.AccessError)}",
+                };
+
             return new Response<IEnumerable<Flight>>
             {
                 Code = ResponseCodes.Success,
                 Message = "Success",
-                Data = new Flight[]
-                {
-                    new Flight
-                    {
-                        Id = 1,
-                        Arrival = DateTime.Now,
-                    },
-                    new Flight
-                    {
-                        Id = 2,
-                        Arrival = DateTime.Now.AddDays(1),
-                    },
-                    new Flight
-                    {
-                        Id = 3,
-                        Arrival = DateTime.Now.AddDays(2),
-                    },
-                }
+                Data = _flightList.GetFlightList(user),
             };
         }
 
-        public IResponse UpdateFlight(UpdateFlightRequest request)
+        public IResponse UpdateFlight(UpdateFlightRequest request, User? user)
         {
+            if (user is null)
+                return new EmptyResponse()
+                {
+                    Code = ResponseCodes.AccessError,
+                    Message = $"{nameof(ResponseCodes.AccessError)}",
+                };
+
             var validator = new UpdateFlightRequestValidator();
 
             var validResult = validator.Validate(request);
 
             if (!validResult.IsValid)
-            {
                 return new EmptyResponse()
                 {
                     Code = ResponseCodes.ValidationError,
                     Message = $"{nameof(ResponseCodes.ValidationError)}: {validResult}",
                 };
-            }
 
-            Trace.WriteLine($"+++> FlightController.UpdateFlight: {request}");
+            var flight = new Flight
+            {
+                Id = request.Id,
+                Origin = request.Origin,
+                Destination = request.Destination,
+                Departure = request.Departure,
+                Arrival = request.Arrival,
+                Status = (Status)request.Status,
+            };
+
+            _flightList.UpdateFlight(flight, user);
 
             return new EmptyResponse()
             {
