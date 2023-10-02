@@ -31,7 +31,7 @@ namespace ForAirAstanaApi.Controllers
         [HttpPost(Name = "Add")]
         public IResponse Add(AddFlightRequest request)
         {
-            return _controller.Invoke(ctrl => ctrl.AddFlight(request));
+            return _controller.Invoke(ctrl => ctrl.AddFlight(request, _user));
         }
 
         [HttpPost(Name = "Update")]
