@@ -35,11 +35,6 @@ namespace ForAirAstana.Infrastructure.Services
             };
         }
 
-        public void AuthorizeUser(User user)
-        {
-            throw new NotImplementedException();
-        }
-
         private string ComputeSHA256(string s)
         {
             string hash = String.Empty;
