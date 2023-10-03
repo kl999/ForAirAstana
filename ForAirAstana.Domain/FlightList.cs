@@ -20,7 +20,7 @@ namespace ForAirAstana.Domain
             
         }
 
-        public Flight GetFlight(int id, User user)
+        public Flight? GetFlight(int id, User user)
         {
             if(user is null)
                 throw new ArgumentNullException(nameof(user));

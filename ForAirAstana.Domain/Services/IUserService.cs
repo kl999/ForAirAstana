@@ -8,7 +8,6 @@ namespace ForAirAstana.Domain.Services
 {
     public interface IUserService
     {
-        User AuthenticateUser(string username, string password);
-        void AuthenticateUser(User user);
+        User? AuthenticateUser(string username, string password);
     }
 }

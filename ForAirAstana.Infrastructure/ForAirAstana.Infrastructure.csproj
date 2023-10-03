@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ForAirAstana.Database\ForAirAstana.Database.csproj" />
     <ProjectReference Include="..\ForAirAstana.Domain\ForAirAstana.Domain.csproj" />
   </ItemGroup>
 

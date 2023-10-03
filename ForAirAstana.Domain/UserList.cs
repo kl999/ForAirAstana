@@ -23,7 +23,10 @@ namespace ForAirAstana.Domain
         {
             var user = _userService.AuthenticateUser(username, password);
 
-            _userService.AuthenticateUser(user);
+            if (user is null)
+                throw new InvalidOperationException("User not found");
+
+            if(user.RoleId == 1) user.IsModerator = true;
 
             _logger.LogDebug($"User #{user.Id} authenticated");
 
