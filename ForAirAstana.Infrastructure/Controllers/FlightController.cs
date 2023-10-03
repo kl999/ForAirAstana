@@ -9,12 +9,10 @@ namespace ForAirAstana.Infrastructure.Controllers
     public class FlightController : IController
     {
         private readonly FlightList _flightList;
-        private readonly FlightCache _flightCache;
 
-        public FlightController(FlightList flightList, FlightCache flightCache)
+        public FlightController(FlightList flightList)
         {
             _flightList = flightList;
-            _flightCache = flightCache;
         }
 
         public IResponse GetFlights(User? user, int order)
@@ -26,22 +24,11 @@ namespace ForAirAstana.Infrastructure.Controllers
                     Message = $"{nameof(ResponseCodes.AccessError)}",
                 };
 
-            IEnumerable<Flight> flights;
-
-            if (!_flightCache.IsExpired)
-                flights = _flightCache.GetFlights();
-            else
-            {
-                flights = _flightList.GetFlightList(user, (FlightListOrder)order);
-
-                _flightCache.SetFlights(flights);
-            }
-
             return new Response<IEnumerable<Flight>>
             {
                 Code = ResponseCodes.Success,
                 Message = "Success",
-                Data = flights,
+                Data = _flightList.GetFlightList(user, (FlightListOrder)order),
             };
         }
 
@@ -75,8 +62,6 @@ namespace ForAirAstana.Infrastructure.Controllers
             };
 
             _flightList.AddFlight(flight, user);
-
-            _flightCache.AddFlight(flight);
 
             return new Response<int>()
             {
@@ -117,8 +102,6 @@ namespace ForAirAstana.Infrastructure.Controllers
             };
 
             _flightList.UpdateFlight(flight, user);
-
-            _flightCache.UpdateFlight(flight);
 
             return new EmptyResponse()
             {

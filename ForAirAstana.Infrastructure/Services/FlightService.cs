@@ -13,10 +13,12 @@ namespace ForAirAstana.Infrastructure.Services
     public class FlightService : IFlightService
     {
         private readonly AirAstanaDbContext _dbContext;
+        private readonly FlightCache _flightCache;
 
-        public FlightService(AirAstanaDbContext dbContext)
+        public FlightService(AirAstanaDbContext dbContext, FlightCache flightCache)
         {
             _dbContext = dbContext;
+            _flightCache = flightCache;
         }
 
         public void AddFlight(Domain.Flight flight)
@@ -34,11 +36,16 @@ namespace ForAirAstana.Infrastructure.Services
 
             _dbContext.SaveChanges();
 
+            _flightCache.AddFlight(flight);
+
             flight.Id = flightDb.Id;
         }
 
         public Domain.Flight? GetFlight(int id)
         {
+            if(!_flightCache.IsExpired)
+                return _flightCache.GetFlight(id);
+
             var dbFlight = _dbContext.Flights.FirstOrDefault(i => i.Id == id);
 
             if(dbFlight is null)
@@ -59,17 +66,24 @@ namespace ForAirAstana.Infrastructure.Services
         {
             var result = new List<Domain.Flight>();
 
-            foreach (var flight in _dbContext.Flights)
+            if (!_flightCache.IsExpired)
+                return _flightCache.GetFlights();
+            else
             {
-                result.Add(new Domain.Flight()
+                foreach (var flight in _dbContext.Flights)
                 {
-                    Id = flight.Id,
-                    Arrival = flight.Arrival,
-                    Origin = flight.Origin,
-                    Destination = flight.Destination,
-                    Departure = flight.Departure,
-                    Status = (Status)flight.Status
-                });
+                    result.Add(new Domain.Flight()
+                    {
+                        Id = flight.Id,
+                        Arrival = flight.Arrival,
+                        Origin = flight.Origin,
+                        Destination = flight.Destination,
+                        Departure = flight.Departure,
+                        Status = (Status)flight.Status
+                    });
+                }
+
+                _flightCache.SetFlights(result);
             }
 
             return result;
@@ -89,6 +103,8 @@ namespace ForAirAstana.Infrastructure.Services
             flightDb.Status = (int)flight.Status;
 
             _dbContext.SaveChanges();
+
+            _flightCache.UpdateFlight(flight);
         }
     }
 }
