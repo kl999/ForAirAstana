@@ -1,15 +1,16 @@
+using ForAirAstana.Database;
 using ForAirAstana.Domain;
 using ForAirAstana.Domain.Services;
 using ForAirAstana.Infrastructure;
 using ForAirAstana.Infrastructure.Controllers;
 using ForAirAstana.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -21,11 +22,17 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddDbContext<AirAstanaDbContext>(opt =>
+    opt.UseSqlServer("name=ConnectionStrings:AirAstanaConnection"));
+
 builder.Services.AddTransient(typeof(C3Controller<>));
 builder.Services.AddTransient<FlightController>();
 builder.Services.AddTransient<IFlightService, FlightService>();
+builder.Services.AddTransient<UserController>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddTransient<FlightList>();
+builder.Services.AddTransient<UserList>();
 
 var app = builder.Build();
 
