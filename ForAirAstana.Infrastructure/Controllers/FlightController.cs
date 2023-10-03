@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using ForAirAstana.Domain;
 using ForAirAstana.Infrastructure.Models;
+using ForAirAstana.Infrastructure.Services;
 using System.Diagnostics;
 
 namespace ForAirAstana.Infrastructure.Controllers
@@ -8,10 +9,40 @@ namespace ForAirAstana.Infrastructure.Controllers
     public class FlightController : IController
     {
         private readonly FlightList _flightList;
+        private readonly FlightCache _flightCache;
 
-        public FlightController(FlightList flightList)
+        public FlightController(FlightList flightList, FlightCache flightCache)
         {
             _flightList = flightList;
+            _flightCache = flightCache;
+        }
+
+        public IResponse GetFlights(User? user)
+        {
+            if (user is null)
+                return new EmptyResponse()
+                {
+                    Code = ResponseCodes.AccessError,
+                    Message = $"{nameof(ResponseCodes.AccessError)}",
+                };
+
+            IEnumerable<Flight> flights;
+
+            if (!_flightCache.IsExpired)
+                flights = _flightCache.GetFlights();
+            else
+            {
+                flights = _flightList.GetFlightList(user);
+
+                _flightCache.SetFlights(flights);
+            }
+
+            return new Response<IEnumerable<Flight>>
+            {
+                Code = ResponseCodes.Success,
+                Message = "Success",
+                Data = flights,
+            };
         }
 
         public IResponse AddFlight(AddFlightRequest request, User? user)
@@ -45,28 +76,13 @@ namespace ForAirAstana.Infrastructure.Controllers
 
             _flightList.AddFlight(flight, user);
 
+            _flightCache.AddFlight(flight);
+
             return new Response<int>()
             {
                 Code = ResponseCodes.Success,
                 Message = $"{nameof(ResponseCodes.Success)}",
                 Data = flight.Id,
-            };
-        }
-
-        public IResponse GetFlights(User? user)
-        {
-            if (user is null)
-                return new EmptyResponse()
-                {
-                    Code = ResponseCodes.AccessError,
-                    Message = $"{nameof(ResponseCodes.AccessError)}",
-                };
-
-            return new Response<IEnumerable<Flight>>
-            {
-                Code = ResponseCodes.Success,
-                Message = "Success",
-                Data = _flightList.GetFlightList(user),
             };
         }
 
@@ -101,6 +117,8 @@ namespace ForAirAstana.Infrastructure.Controllers
             };
 
             _flightList.UpdateFlight(flight, user);
+
+            _flightCache.UpdateFlight(flight);
 
             return new EmptyResponse()
             {

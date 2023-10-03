@@ -31,6 +31,8 @@ builder.Services.AddTransient<IFlightService, FlightService>();
 builder.Services.AddTransient<UserController>();
 builder.Services.AddTransient<IUserService, UserService>();
 
+builder.Services.AddSingleton<FlightCache>();
+
 builder.Services.AddTransient<FlightList>();
 builder.Services.AddTransient<UserList>();
 

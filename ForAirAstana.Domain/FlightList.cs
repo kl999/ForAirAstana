@@ -17,7 +17,6 @@ namespace ForAirAstana.Domain
         {
             _logger = logger;
             _flightService = flightService;
-            
         }
 
         public Flight? GetFlight(int id, User user)
@@ -32,7 +31,7 @@ namespace ForAirAstana.Domain
         {
             if (user is null)
                 throw new ArgumentNullException(nameof(user));
-            if(user.IsModerator)
+            if(!user.IsModerator)
                 throw new InvalidOperationException("User is not moderator");
 
             _flightService.AddFlight(flight);
@@ -44,7 +43,7 @@ namespace ForAirAstana.Domain
         {
             if (user is null)
                 throw new ArgumentNullException(nameof(user));
-            if (user.IsModerator)
+            if (!user.IsModerator)
                 throw new InvalidOperationException("User is not moderator");
 
             _flightService.UpdateFlight(flight);
