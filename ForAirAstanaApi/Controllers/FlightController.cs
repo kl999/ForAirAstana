@@ -22,13 +22,13 @@ namespace ForAirAstanaApi.Controllers
         }
 
         [HttpGet(Name = "GetList")]
-        public IResponse GetList()
+        public IResponse GetList(int? order)
         {
             string? userJson = HttpContext.Session.GetString("User");
 
             var user = userJson is null ? null : JsonSerializer.Deserialize<User>(userJson);
 
-            return _controller.Invoke(ctrl => ctrl.GetFlights(user));
+            return _controller.Invoke(ctrl => ctrl.GetFlights(user, order ?? 1));
         }
 
         [HttpPost(Name = "Add")]

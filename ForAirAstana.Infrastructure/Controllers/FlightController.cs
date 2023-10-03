@@ -17,7 +17,7 @@ namespace ForAirAstana.Infrastructure.Controllers
             _flightCache = flightCache;
         }
 
-        public IResponse GetFlights(User? user)
+        public IResponse GetFlights(User? user, int order)
         {
             if (user is null)
                 return new EmptyResponse()
@@ -32,7 +32,7 @@ namespace ForAirAstana.Infrastructure.Controllers
                 flights = _flightCache.GetFlights();
             else
             {
-                flights = _flightList.GetFlightList(user);
+                flights = _flightList.GetFlightList(user, (FlightListOrder)order);
 
                 _flightCache.SetFlights(flights);
             }
